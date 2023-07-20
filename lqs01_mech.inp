@@ -1,0 +1,2003 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!ANSYS 11.0 SP1 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Call Line
+! /inp,lqs01_mech,inp
+! Reset
+finish
+/clear,start
+
+! Title
+/title,LQS01, mechanical model
+/filname,lqs01_mech,0
+/UNITS,SI
+
+/CONFIG,nproc,2
+
+pi=acos(-1)
+
+*afun,deg
+
+/PREP7 
+
+tref,293   
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Cross-section parameters
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Cross-section parameters
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!Bladder pressure
+*set,bladder_p,33e6
+*set,interf,150e-6
+
+!Coil
+*set,r1,45e-3
+*set,r2,55.425e-3
+*set,r3,65.850e-3
+
+*set,block11,0
+*set,block12,0
+*set,block13,19.975
+*set,block14,21.729
+
+*set,block21,24.272
+*set,block22,24.653
+*set,block23,34.350
+*set,block24,34.787
+
+*set,block31,0
+*set,block32,0
+*set,block33,22.336
+*set,block34,23.465
+
+!Filler
+*set,fillth,1.295e-3
+
+!Pad
+*set,padin,r3+fillth
+*set,padth,30.480e-3
+*set,padout,padin+padth
+*set,rrod,12.7e-3
+*set,rwash,25.4e-3
+*set,rhole,15e-3
+*set,xhole,61.148e-3
+*set,yhole,61.148e-3
+*set,rpadtie,9.525e-3/2
+*set,xpadtie,71.082e-3
+*set,ypadtie,33.452e-3
+
+!Master
+*set,pmasterth,14.3e-3
+*set,pmasterin,padout-pmasterth
+*set,pmastery,77.952e-3
+*set,alkeyh,12.725e-3
+*set,keyy,21.050e-3
+*set,keyh,12.7e-3
+*set,blady,37.309e-3
+*set,bladh,26.416e-3
+*set,slot,3.175e-3
+
+!Yoke
+*set,yokein,padout+4.225e-3
+*set,yokeout,228e-3
+*set,yblady,160.12e-3
+*set,yalkeyy,196.008e-3
+*set,yalkeyh,alkeyh
+*set,ryoketie,22.225e-3/2
+*set,xyoketie,158.828e-3
+*set,yyoketie,75e-3
+*set,ymasterth,pmasterth
+*set,ymastery,pmastery
+
+!Cylinder
+*set,shellin,yokeout
+*set,shellth,20e-3
+*set,shellout,shellin+shellth
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!New coordinate systems
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+local,11,1,0,0,0,0,0,0
+local,12,0,0,0,0,45,0,0
+local,14,0,0,-3.175e-3*sqrt(2),0,45,0,0
+                       
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Elements, real constants and material properties
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!Elements
+et,1,plane82
+r,1
+
+!Material properties
+!Coil
+mptemp,1,4.3,293
+mpdata,ey,1,1,44000e6,44000e6
+mpdata,ex,1,1,52000e6,52000e6
+mpdata,gxy,1,1,21000E6,21000e6   !Ex/(2*(1+Nuxy))
+mpdata,prxy,1,1,0.3,0.3
+mp,alpy,1,1.16E-5    !3.36e-3  
+mp,alpx,1,1.07E-5    !3.08e-3 		
+
+!Stainless steel
+mptemp,1,4.3,293
+mpdata,ex,2,1,210000e6,193000e6
+mpdata,prxy,2,1,0.28,0.28
+mp,alpx,2,9.83E-6    !2.84e-3  
+
+!Aluminum bronze
+mptemp,1,4.3,293
+mpdata,ex,3,1,120000e6,110000e6
+mpdata,prxy,3,1,0.3,0.3
+mp,alpx,3,1.08E-5    !3.12e-3  
+
+!Iron
+mptemp,1,4.3,293
+mpdata,ex,4,1,224000e6,213000e6
+mpdata,prxy,4,1,0.28,0.28
+mp,alpx,4,6.82E-6    !1.97e-3  
+
+!Aluminum
+mptemp,1,4.3,293
+mpdata,ex,5,1,79000e6,70000e6
+mpdata,prxy,5,1,0.34,0.34
+mp,alpx,5,1.45E-5    !4.2e-3  
+
+!G10
+mptemp,1,4.3,293
+mpdata,ex,6,1,30000e6,30000e6
+mpdata,prxy,6,1,0.3,0.3
+mp,alpx,6,2.44E-5    !7.06e-3 
+
+!Titanimu
+mptemp,1,4.3,293
+mpdata,ex,7,1,130000e6,130000e6
+mpdata,prxy,7,1,0.3,0.3
+mp,alpx,7,6.03E-6    !1.74e-3  
+
+!Nitronic 40
+mptemp,1,4.3,293
+mpdata,ex,8,1,225000e6,210000e6
+mpdata,prxy,8,1,0.28,0.28
+mp,alpx,8,0.90E-5    !2.6e-3  
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!101: Coil, wedge, pole layer 1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,101
+numstr,line,101
+numstr,area,101
+
+csys,1
+
+k,101,r1,block11
+k,102,r2,block12
+k,103,r2,block13
+k,104,r1,block14
+
+k,105,r2,block34
+
+k,106,r1,block21
+k,107,r2,block22
+k,108,r2,block23
+k,109,r1,block24
+
+k,110,r1,block24
+k,111,r2,block23
+k,112,r2,45
+k,113,r1,45
+
+csys,1
+
+l,101,102,10
+l,102,103,12
+l,103,104,10
+l,104,101,12
+
+l,103,105,3
+l,105,107,1
+l,104,106,4
+
+l,106,107,10
+l,107,108,6
+l,108,109,10
+l,109,106,6
+
+l,110,111,10
+l,111,112,6
+l,112,113,10
+l,113,110,6
+
+
+a,101,102,103,104
+a,104,103,105,107,106
+a,106,107,108,109
+a,110,111,112,113
+
+alls
+
+asel,s,,,101
+cm,block1,area
+alls
+
+asel,s,,,102
+cm,wedge,area
+alls
+
+asel,s,,,103
+cm,block2,area
+alls
+
+asel,s,,,104,
+cm,pole1,area
+alls
+
+esize,1e-3
+
+type,1                      
+mat,1
+cmsel,s,block1
+cmsel,a,block2
+aatt,1,,1
+amesh,all
+alls
+
+type,1                      
+mat,3
+cmsel,s,wedge
+aatt,3,,1
+amap,102,104,103,107,106
+alls
+
+type,1                      
+mat,7
+cmsel,s,pole1
+aatt,7,,1
+amesh,all
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!201: Coil, pole layer 2
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,201
+numstr,line,201
+numstr,area,201
+
+csys,1
+
+k,201,r2,block31
+k,202,r3,block32
+k,203,r3,block33
+k,204,r2,block34
+k,205,r2,block13
+
+k,206,r2,block34
+k,207,r3,block33
+k,208,r3,0
+kmove,208,14,u,0,0,1,r3,u,0
+k,209,r3,45
+k,210,r2,45
+k,211,r2,block23
+k,212,r2,block22
+
+l,201,202,10
+l,202,203,15
+l,203,204,10
+l,204,205,3
+l,205,201,12
+
+l,206,207,10
+l,207,208,12
+l,208,209,1
+l,209,210,10
+l,210,211,6
+l,211,212,6
+l,212,206,1
+
+a,201,202,203,204,205
+a,206,207,208,209,210,211,212
+
+alls
+
+asel,s,,,201
+cm,block3,area
+alls
+
+asel,s,,,202,
+cm,pole2,area
+alls
+
+esize,1e-3
+
+type,1                      
+mat,1
+cmsel,s,block3
+aatt,1,,1
+amap,201,201,202,203,204
+alls
+
+type,1                      
+mat,7
+cmsel,s,pole2
+aatt,7,,1
+amap,202,206,207,209,210
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Component
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+cmsel,s,block1
+cmsel,a,block2
+cmsel,a,block3
+cm,coil,area
+alls
+
+cmsel,s,pole1
+cmsel,a,pole2
+cm,pole,area
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Azimuthal coil properties
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+cmsel,s,coil
+alls,below,area
+EMODIF,all,ESYS,11,
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!301: Spacer/shim
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,301
+numstr,line,301
+numstr,area,301
+
+csys,1
+
+k,301,r3,block32
+k,302,r3+fillth,block32
+k,303,r3+fillth,45
+kmove,303,14,u,0,0,1,r3+fillth,u,0
+k,304,r3,45
+kmove,304,14,u,0,0,1,r3,u,0
+k,305,r3,block33
+
+csys,0
+l,301,302,1
+csys,1
+l,302,303,27
+csys,0
+l,303,304,1
+csys,1
+l,304,305,12
+l,305,301,15
+
+a,301,302,303,304,305
+
+asel,s,,,301
+cm,filler,area
+alls
+
+type,1                      
+mat,6
+cmsel,s,filler
+aatt,6,,1
+amap,301,301,302,303,304
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!401: Pad
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,401
+numstr,line,401
+numstr,area,401
+
+csys,0
+
+k,401,padin,0
+k,402,pmasterin,0
+k,403,pmasterin,pmastery-pmasterth
+k,404,padout,pmastery
+k,405,padout,0
+kmove,405,14,u,0,0,0,padout,u,0
+csys,1
+k,406,padin,0
+kmove,406,14,u,0,0,1,padin,u,0
+
+csys,0
+l,401,402,
+l,402,403,
+l,403,404,
+l,404,405,
+l,405,406,
+
+csys,1
+l,406,401,27
+
+csys,0
+
+a,401,402,403,404,405,406,
+
+cyl4,xhole,yhole,rhole
+
+asel,s,,,401,402,
+asba,401,402,,dele,dele !area 403
+
+cyl4,xpadtie,ypadtie,rpadtie	!area 401
+
+asel,s,,,401,403,2
+asba,403,401,,dele,keep !area 401,402
+
+cyl4,xhole,yhole,rrod,225,rrod,405 !area 403
+
+cyl4,xhole,yhole,rwash,225,rwash,405 !area 404
+
+asel,s,,,402
+cm,pad,area
+alls
+
+asel,s,,,403
+cm,rod,area
+alls
+
+asel,s,,,404
+cm,wash,area
+alls
+
+cmsel,s,rod
+alls,below,area
+aatt,2,,1
+alls
+
+type,1                      
+mat,4
+cmsel,s,pad
+alls,below,area
+aatt,4,,1
+lesize,all,3e-3
+esize,3e-3
+amesh,all
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!451: Pmaster
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,451
+numstr,line,451
+numstr,area,451
+
+csys,0
+
+k,451,pmasterin,0
+k,452,padout-slot,0
+k,453,padout-slot,alkeyh/2
+k,454,padout,alkeyh/2
+k,455,padout,keyy
+k,456,padout-slot,keyy
+k,457,padout-slot,keyy+keyh
+k,458,padout,keyy+keyh
+k,459,padout,blady
+k,460,padout-slot,blady
+k,461,padout-slot,blady+bladh
+k,462,padout,blady+bladh
+k,463,padout,pmastery
+k,464,pmasterin,pmastery-pmasterth
+
+l,451,452,
+l,452,453,
+l,453,454,
+l,454,455,
+l,455,456,
+l,456,457,
+l,457,458,
+l,458,459,
+l,459,460,
+l,460,461,
+l,461,462,
+l,462,463,
+l,463,464,
+l,464,451,
+
+a,451,452,453,454,455,456,457,458,459,460,461,462,463,464
+
+asel,s,,,451
+cm,pmaster,area
+alls
+
+type,1                      
+mat,4
+cmsel,s,pmaster
+alls,below,area
+aatt,4,,1
+lesize,all,3e-3
+esize,3e-3
+amesh,all
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!501: Key
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,501
+numstr,line,501
+numstr,area,501
+
+csys,0
+
+k,501,padout-slot,keyy
+k,502,padout,keyy
+k,503,yokein,keyy
+k,504,yokein+slot,keyy
+k,505,yokein+slot,keyy+keyh
+k,506,yokein,keyy+keyh
+k,507,padout,keyy+keyh
+k,508,padout-slot,keyy+keyh
+
+l,501,502
+l,502,503,
+l,503,504
+l,504,505
+l,505,506
+l,506,507
+l,507,508
+l,508,501
+
+a,501,502,503,504,505,506,507,508
+
+asel,s,,,501
+cm,key,area
+alls
+
+type,1                      
+mat,4
+cmsel,s,key
+alls,below,area
+aatt,4,,1
+lesize,all,3e-3
+esize,3e-3
+amesh,all
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!601: Yoke
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,601
+numstr,line,601
+numstr,area,601
+
+csys,0
+
+k,601,yokein+ymasterth,0
+k,602,yokeout,0
+k,603,yokeout,0
+kmove,603,14,u,0,0,1,yokeout,u,0
+
+csys,14
+
+k,604,yalkeyy+yalkeyh,0
+k,605,yalkeyy+yalkeyh,-slot
+k,606,yalkeyy,-slot
+k,607,yalkeyy,0
+k,608,yblady+bladh,0
+k,609,yblady+bladh,-slot
+k,610,yblady,-slot
+k,611,yblady,0
+
+csys,0
+k,612,yokein,0
+kmove,612,14,u,0,0,0,yokein,u,0
+k,613,yokein,ymastery
+k,614,yokein+ymasterth,ymastery-ymasterth
+
+l,601,602,
+
+csys,1
+
+l,602,603,
+
+csys,0
+
+l,603,604,
+l,604,605,
+l,605,606,
+l,606,607,
+l,607,608,
+l,608,609,
+l,609,610,
+l,610,611,
+l,611,612,
+l,612,613,
+l,613,614,
+l,614,601,
+
+a,601,602,603,604,605,606,607,608,609,610,611,612,613,614
+
+cyl4,xyoketie,yyoketie,ryoketie	!area 602
+
+asel,s,,,601,602
+asba,601,602,,dele,keep !area 602,603
+
+asel,s,,,603
+cm,yoke,area
+alls
+
+type,1                      
+mat,4
+cmsel,s,yoke
+alls,below,area
+aatt,4,,1
+lsel,r,loc,x,yokein-0.1e-3,yokein+ymasterth+0.1e-3
+lesize,all,3e-3
+alls,below,area
+esize,6e-3
+amesh,all
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!651: Ymaster
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,651
+numstr,line,651
+numstr,area,651
+
+csys,0
+
+k,651,yokein+slot,0
+k,652,yokein+slot,alkeyh/2
+k,653,yokein,alkeyh/2
+k,654,yokein,keyy
+k,655,yokein+slot,keyy
+k,656,yokein+slot,keyy+keyh
+k,657,yokein,keyy+keyh
+k,658,yokein,blady
+k,659,yokein+slot,blady
+k,660,yokein+slot,blady+bladh
+k,661,yokein,blady+bladh
+k,662,yokein,ymastery
+k,663,yokein+ymasterth,ymastery-ymasterth
+k,664,yokein+ymasterth,0
+
+l,651,652,
+l,652,653,
+l,653,654,
+l,654,655,
+l,655,656,
+l,656,657,
+l,657,658,
+l,658,659,
+l,659,660,
+l,660,661,
+l,661,662,
+l,662,663,
+l,663,664,
+l,664,651,
+
+a,651,652,653,654,655,656,657,658,659,660,661,662,663,664
+
+asel,s,,,651
+cm,ymaster,area
+alls
+
+type,1                      
+mat,4
+cmsel,s,ymaster
+alls,below,area
+aatt,4,,1
+lsel,r,loc,x,yokein-0.1e-3,yokein+ymasterth+0.1e-3
+lesize,all,3e-3
+alls,below,area
+esize,6e-3
+amesh,all
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!701: Shell
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,701
+numstr,line,701
+numstr,area,701
+
+csys,1
+
+k,701,shellin,0
+k,702,shellout,0
+k,703,shellout,0
+kmove,703,14,u,0,0,1,shellout,u,0
+k,704,shellout,45
+k,705,shellin,45
+k,706,shellin,45
+kmove,706,14,u,0,0,1,shellin,u,0
+
+l,701,702,
+l,702,703,
+l,703,704,
+l,704,705,
+l,705,706,
+l,706,701,
+
+csys,1
+
+a,701,702,703,704,705,706,
+
+asel,s,,,701
+cm,shell,area
+alls
+
+type,1                      
+mat,5
+cmsel,s,shell
+alls,below,area
+aatt,5,,1
+csys,1
+lsel,r,loc,x,shellin
+lesize,all,6e-3
+csys,0
+alls,below,area
+esize,6e-3
+amap,701,701,702,704,705
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!801: Air
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+numstr,kp,801
+numstr,line,801
+numstr,area,801
+
+csys,1
+
+k,801,0,0
+k,802,r1,45
+
+csys,0
+k,803,yokein,0
+kmove,803,12,u,0,0,0,yokein,u,0
+
+csys,1
+l,801,802,
+l,802,109,6
+l,801,101
+
+csys,0
+
+a,801,802,109,106,104,101	!area 801
+
+a,452,651,652,653,654,455,454,453,	!area 802
+
+a,657,658,659,660,661,662,612,405,463,462,461,460,459,458	!area 803
+
+a,209,208,406,412,410,407,411,405,612,803	!area 804
+
+a,803,612,611,610,609,608,607,606,605,604,706,705	!area 805
+
+asel,s,,,801,805
+asel,a,,,401
+asel,a,,,602
+cm,air,area
+alls
+
+type,1                      
+mat,1
+cmsel,s,air
+alls,below,area
+aatt,1,,1
+
+asel,s,,,801,
+esize,3e-3
+!amesh,all
+alls
+
+asel,s,,,401
+alls,below,area
+esize,6e-3
+!amesh,all
+alls
+
+
+asel,s,,,802,803
+esize,3e-3
+!amesh,all
+alls
+
+asel,s,,,804
+alls,below,area
+esize,3e-3
+!amesh,all
+alls
+
+asel,s,,,805
+alls,below,area
+esize,6e-3
+!amesh,all
+alls
+
+asel,s,,,602
+alls,below,area
+esize,6e-3
+!amesh,all
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Contact pair
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!Real constant ans key option for the contact elements
+!keyopt(12)=0 standard (separation - sliding)
+!keyopt(12)=1 rough (separation - no sliding)
+!keyopt(12)=2 no separation (sliding)
+!keyopt(12)=5 bonded (no separation - no sliding)
+!keyopt(9)=1 Exclude both initial penetration or gap
+!keyopt(9)=0 Include both initial penetration or gap
+!keyopt(9)=3 Include offset only (contact real constant, positive being interf), exclude both initial penetration or gap
+
+!Layer1 - Layer2
+et,10,conta172
+keyopt,10,12,5
+keyopt,10,9,1  
+mp,mu,10,0
+r,10
+R,10,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,110,targe169
+
+!Layer2 - Filler
+et,11,conta172
+keyopt,11,12,0
+keyopt,11,9,1  
+mp,mu,11,0.2
+r,11
+R,11,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,111,targe169
+
+!Layer1 - Pole1
+et,12,conta172
+keyopt,12,12,5
+keyopt,12,9,1  
+mp,mu,12,0
+r,12
+R,12,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,112,targe169
+
+!Layer2 - Pole2
+et,13,conta172
+keyopt,13,12,5
+keyopt,13,9,1  
+mp,mu,13,0
+r,13
+R,13,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,113,targe169
+
+!Layer1 - Pole2
+et,14,conta172
+keyopt,14,12,5
+keyopt,14,9,1  
+mp,mu,14,0
+r,14
+R,14,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,114,targe169
+
+!Pole1 - Pole2
+et,15,conta172
+keyopt,15,12,5
+keyopt,15,9,1  
+mp,mu,15,0
+r,15
+R,15,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,115,targe169
+
+!Pole2 - Filler
+et,16,conta172
+keyopt,16,12,0
+keyopt,16,9,1  
+mp,mu,16,0.2
+r,16
+R,16,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,116,targe169
+
+!Filler - Pad
+et,17,conta172
+keyopt,17,12,0
+keyopt,17,9,1  
+mp,mu,17,0.2
+r,17
+R,17,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,117,targe169
+
+!Pmaster - Pad (straight)
+et,18,conta172
+keyopt,18,12,0
+keyopt,18,9,1  
+mp,mu,18,0.2
+r,18
+R,18,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,118,targe169
+
+!Pmaster - Pad (tilted)
+et,19,conta172
+keyopt,19,12,0
+keyopt,19,9,3  
+mp,mu,19,0.2
+r,19
+R,19,,,, ,, 
+RMORE,,,,-25.4e-6, ,
+et,119,targe169
+
+!Pmaster - Key
+et,20,conta172
+keyopt,20,12,0
+keyopt,20,9,3  
+mp,mu,20,0.2
+r,20
+R,20,,,, ,, 
+RMORE,,,,interf, ,
+et,120,targe169
+
+!Ymaster - Yoke (straight)
+et,21,conta172
+keyopt,21,12,0
+keyopt,21,9,1  
+mp,mu,21,0.2
+r,21
+R,21,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,121,targe169
+
+!Ymaster - Yoke (tilted)
+et,22,conta172
+keyopt,22,12,0
+keyopt,22,9,3  
+mp,mu,22,0.2
+r,22
+R,22,,,, ,, 
+RMORE,,,,-25.4e-6, ,
+et,122,targe169
+
+!Yoke - Shell
+et,23,conta172
+keyopt,23,12,0
+keyopt,23,9,1  
+mp,mu,23,0.2
+r,23
+R,23,,,, ,, 
+RMORE,,,,-0e-6, ,
+et,123,targe169
+
+!Layer1 - Layer2
+
+csys,1
+real,10
+mat,10
+! Generate the target surface   
+cmsel,s,block1
+cmsel,a,wedge
+lsla,s,1
+lsel,r,loc,x,r2
+nsll,s,1
+esln,s,0
+type,110  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,block3
+lsla,s,1
+lsel,r,loc,x,r2
+nsll,s,1
+esln,s,0
+type,10  
+esurf,all   
+alls
+
+!Layer2 - Filler
+
+csys,1
+real,11
+mat,11
+! Generate the target surface   
+cmsel,s,block3
+lsla,s,1
+lsel,r,loc,x,r3
+nsll,s,1
+esln,s,0
+type,111  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,filler
+lsla,s,1
+lsel,r,loc,x,r3
+lsel,r,loc,y,0,block33
+nsll,s,1
+esln,s,0
+type,11  
+esurf,all   
+alls
+
+!Layer1 - Pole1
+
+csys,1
+real,12
+mat,12
+! Generate the target surface   
+cmsel,s,block2
+lsla,s,1
+lsel,r,loc,y,block23,block24
+nsll,s,1
+esln,s,0
+type,112  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,pole1
+lsla,s,1
+lsel,r,loc,y,block23,block24
+nsll,s,1
+esln,s,0
+type,12  
+esurf,all   
+alls
+
+!Layer2 - Pole2
+
+csys,1
+real,13
+mat,13
+! Generate the target surface   
+cmsel,s,block3
+lsla,s,1
+lsel,r,loc,y,block33,block34
+nsll,s,1
+esln,s,0
+type,113  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,pole2
+lsla,s,1
+lsel,r,loc,y,block33,block34
+nsll,s,1
+esln,s,0
+type,13  
+esurf,all   
+alls
+
+!Layer1 - Pole2
+
+csys,1
+real,14
+mat,14
+! Generate the target surface   
+cmsel,s,block2
+cmsel,a,wedge
+lsla,s,1
+lsel,r,loc,x,r2
+lsel,r,loc,y,block34,block23
+nsll,s,1
+esln,s,0
+type,114  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,pole2
+lsla,s,1
+lsel,r,loc,x,r2
+lsel,r,loc,y,block34,block23
+nsll,s,1
+esln,s,0
+type,14  
+esurf,all   
+alls
+
+!Pole1 - Pole2
+
+csys,1
+real,15
+mat,15
+! Generate the target surface   
+cmsel,s,pole1
+lsla,s,1
+lsel,r,loc,x,r2
+lsel,r,loc,y,block23,45
+nsll,s,1
+esln,s,0
+type,115  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,pole2
+lsla,s,1
+lsel,r,loc,x,r2
+lsel,r,loc,y,block23,45
+nsll,s,1
+esln,s,0
+type,15  
+esurf,all   
+alls
+
+!Pole2 - Filler
+
+csys,1
+real,16
+mat,16
+! Generate the target surface   
+cmsel,s,pole2
+lsla,s,1
+lsel,r,loc,x,r3
+nsll,s,1
+esln,s,0
+type,116  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,filler
+lsla,s,1
+lsel,r,loc,x,r3
+nsll,s,1
+esln,s,0
+type,16  
+esurf,all   
+alls
+
+!Filler - Pad
+
+csys,1
+real,17
+mat,17
+! Generate the target surface   
+cmsel,s,filler
+lsla,s,1
+lsel,r,loc,x,padin
+nsll,s,1
+esln,s,0
+type,117  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,pad
+lsla,s,1
+lsel,r,loc,x,padin
+nsll,s,1
+esln,s,0
+type,17  
+esurf,all   
+alls
+
+!Pmaster - Pad (straight)
+
+csys,0
+real,18
+mat,18
+! Generate the target surface   
+cmsel,s,pad
+lsla,s,1
+lsel,r,loc,x,padout-pmasterth
+lsel,r,loc,y,0,pmastery-pmasterth
+nsll,s,1
+esln,s,0
+type,118  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,pmaster
+lsla,s,1
+lsel,r,loc,x,padout-pmasterth
+lsel,r,loc,y,0,pmastery-pmasterth
+nsll,s,1
+esln,s,0
+type,18  
+esurf,all   
+alls
+
+!Pmaster - Pad (tilted)
+
+csys,0
+real,19
+mat,19
+! Generate the target surface   
+cmsel,s,pad
+lsla,s,1
+lsel,r,loc,x,padout-pmasterth,padout-0.001
+lsel,r,loc,y,pmastery-pmasterth,pmastery
+nsll,s,1
+esln,s,0
+type,119  
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,pmaster
+lsla,s,1
+lsel,r,loc,x,padout-pmasterth,padout-0.001
+lsel,r,loc,y,pmastery-pmasterth,pmastery
+nsll,s,1
+esln,s,0
+type,19  
+esurf,all   
+alls
+
+!Pmaster - Key 
+
+csys,0
+real,20
+mat,20
+! Generate the target surface   
+cmsel,s,pmaster
+lsla,s,1
+lsel,r,loc,x,padout-slot
+lsel,r,loc,y,keyy,keyy+keyh
+nsll,s,1
+esln,s,0
+type,120 
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,key
+lsla,s,1
+lsel,r,loc,x,padout-slot
+lsel,r,loc,y,keyy,keyy+keyh
+nsll,s,1
+esln,s,0
+type,20 
+esurf,all   
+alls
+
+!Ymaster - Yoke (straight)
+
+csys,0
+real,21
+mat,21
+! Generate the target surface   
+cmsel,s,yoke
+lsla,s,1
+lsel,r,loc,x,yokein+ymasterth
+lsel,r,loc,y,0,ymastery-ymasterth
+nsll,s,1
+esln,s,0
+type,121
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,ymaster
+lsla,s,1
+lsel,r,loc,x,yokein+ymasterth
+lsel,r,loc,y,0,ymastery-ymasterth
+nsll,s,1
+esln,s,0
+type,21
+esurf,all   
+alls
+
+!Ymaster - Yoke (tilted)
+
+csys,0
+real,22
+mat,22
+! Generate the target surface   
+cmsel,s,yoke
+lsla,s,1
+lsel,r,loc,x,yokein+0.001,yokein+ymasterth-0.001
+lsel,r,loc,y,ymastery-ymasterth+0.001,ymastery-0.001
+nsll,s,1
+esln,s,0
+type,122
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,ymaster
+lsla,s,1
+lsel,r,loc,x,yokein+0.001,yokein+ymasterth-0.001
+lsel,r,loc,y,ymastery-ymasterth+0.001,ymastery-0.001
+nsll,s,1
+esln,s,0
+type,22
+esurf,all   
+alls
+
+!Yoke - Shell
+
+csys,1
+real,23
+mat,23
+! Generate the target surface   
+cmsel,s,shell
+lsla,s,1
+lsel,r,loc,x,shellin
+nsll,s,1
+esln,s,0
+type,123
+esurf,all   
+alls
+! Generate the contact surface  
+cmsel,s,yoke
+lsla,s,1
+lsel,r,loc,x,shellin
+nsll,s,1
+esln,s,0
+type,23  
+esurf,all   
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Boundary conditions
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+alls
+csys,1
+nsel,r,loc,y,0
+dsymm,symm,y,1
+alls
+nsel,r,loc,y,45
+dsymm,symm,y,1
+alls
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Coupling
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+alls
+csys,0
+cmsel,s,key
+cmsel,a,ymaster
+alls,below,area
+lsel,r,loc,x,yokein+slot
+lsel,r,loc,y,keyy,keyy+keyh
+nsll,r,1
+CPINTF,ALL,0.0001,  
+alls
+
+finish
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Solution
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+/solu   
+autots,on
+nropt,full
+neqit,150
+!nlgeom,on
+
+/title, Keys
+alls
+time,1
+solve   
+
+/title, Cool-down
+bfunif,temp,4.3
+alls
+time,2
+solve   
+
+/title, Nominal field
+ldread,forc,,,,,lqs01_magn,rmg
+!fscale,(245/249)**2
+alls
+time,3
+solve   
+
+finish
+
+
+/post1
+
+/AUTO,1 
+/DSCALE,1,OFF   
+
+/PLOPTS,INFO,1  
+/PLOPTS,LEG1,1  
+/PLOPTS,LEG2,0  
+/PLOPTS,LEG3,1  
+/PLOPTS,FRAME,1 
+/PLOPTS,TITLE,1 
+/PLOPTS,MINM,1  
+/PLOPTS,FILE,0  
+/PLOPTS,LOGO,1  
+/PLOPTS,WINS,1  
+/PLOPTS,WP,0
+/PLOPTS,DATE,0  
+/TRIAD,OFF  
+
+/dev,font,1,Courier*New,400,0,-24,0,0,,,
+
+/RGB,INDEX,100,100,100, 0   
+/RGB,INDEX, 80, 80, 80,13   
+/RGB,INDEX, 60, 60, 60,14   
+/RGB,INDEX, 0, 0, 0,15  
+
+set,1
+
+cmsel,s,pole1
+alls,below,area
+rsys,1
+plnsol,epto,y
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,pole1
+alls,below,area
+rsys,1
+plnsol,s,y
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,yoke
+alls,below,area
+plnsol,s,eqv
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,ymaster
+alls,below,area
+plnsol,s,eqv
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,shell
+alls,below,area
+rsys,1
+plnsol,s,y
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,epto,y
+/show,jpeg  
+/replot 
+/show,close 
+rsys,0
+
+cmsel,s,coil
+alls,below,area
+rsys,1
+plnsol,s,x
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,s,y
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,s,eqv
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,s,xy
+/show,jpeg  
+/replot 
+/show,close 
+rsys,0
+
+esel,s,type,,12,13,1
+nsle
+plnsol,cont,pres
+/show,jpeg  
+/replot 
+/show,close 
+
+set,2
+
+cmsel,s,pole1
+alls,below,area
+rsys,1
+plnsol,epto,y
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,pole1
+alls,below,area
+rsys,1
+plnsol,s,y
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,yoke
+alls,below,area
+plnsol,s,1
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,ymaster
+alls,below,area
+plnsol,s,1
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,shell
+alls,below,area
+rsys,1
+plnsol,s,y
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,epto,y
+/show,jpeg  
+/replot 
+/show,close 
+rsys,0
+
+cmsel,s,coil
+alls,below,area
+rsys,1
+plnsol,s,x
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,s,y
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,s,eqv
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,s,xy
+/show,jpeg  
+/replot 
+/show,close 
+rsys,0
+
+esel,s,type,,12,13,1
+nsle
+plnsol,cont,pres
+/show,jpeg  
+/replot 
+/show,close 
+
+set,3
+
+cmsel,s,pole1
+alls,below,area
+rsys,1
+plnsol,epto,y
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,pole1
+alls,below,area
+rsys,1
+plnsol,s,y
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,yoke
+alls,below,area
+plnsol,s,1
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,ymaster
+alls,below,area
+plnsol,s,1
+/show,jpeg  
+/replot 
+/show,close 
+
+cmsel,s,shell
+alls,below,area
+rsys,1
+plnsol,s,y
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,epto,y
+/show,jpeg  
+/replot 
+/show,close 
+rsys,0
+
+cmsel,s,coil
+alls,below,area
+rsys,1
+plnsol,s,x
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,s,y
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,s,eqv
+/show,jpeg  
+/replot 
+/show,close 
+plnsol,s,xy
+/show,jpeg  
+/replot 
+/show,close 
+rsys,0
+
+esel,s,type,,12,13,1
+nsle
+plnsol,cont,pres
+/show,jpeg  
+/replot 
+/show,close 
+
+/rename,lqs01_mech000,jpg,,lqs01_mech_poleey_warm,jpg,
+/rename,lqs01_mech001,jpg,,lqs01_mech_polesy_warm,jpg,
+/rename,lqs01_mech002,jpg,,lqs01_mech_yokeeq_warm,jpg,
+/rename,lqs01_mech003,jpg,,lqs01_mech_ymastereq_warm,jpg,
+/rename,lqs01_mech004,jpg,,lqs01_mech_shellsy_warm,jpg,
+/rename,lqs01_mech005,jpg,,lqs01_mech_shelley_warm,jpg,
+/rename,lqs01_mech006,jpg,,lqs01_mech_coilx_warm,jpg,
+/rename,lqs01_mech007,jpg,,lqs01_mech_coily_warm,jpg,
+/rename,lqs01_mech008,jpg,,lqs01_mech_coileq_warm,jpg,
+/rename,lqs01_mech009,jpg,,lqs01_mech_coilxy_warm,jpg,
+/rename,lqs01_mech010,jpg,,lqs01_mech_cont_warm,jpg,
+
+/rename,lqs01_mech011,jpg,,lqs01_mech_poleey_cold,jpg,
+/rename,lqs01_mech012,jpg,,lqs01_mech_polesy_cold,jpg,
+/rename,lqs01_mech013,jpg,,lqs01_mech_yokes1_cold,jpg,
+/rename,lqs01_mech014,jpg,,lqs01_mech_ymasters1_cold,jpg,
+/rename,lqs01_mech015,jpg,,lqs01_mech_shellsy_cold,jpg,
+/rename,lqs01_mech016,jpg,,lqs01_mech_shelley_cold,jpg,
+/rename,lqs01_mech017,jpg,,lqs01_mech_coilx_cold,jpg,
+/rename,lqs01_mech018,jpg,,lqs01_mech_coily_cold,jpg,
+/rename,lqs01_mech019,jpg,,lqs01_mech_coileq_cold,jpg,
+/rename,lqs01_mech020,jpg,,lqs01_mech_coilxy_cold,jpg,
+/rename,lqs01_mech021,jpg,,lqs01_mech_cont_cold,jpg,
+
+/rename,lqs01_mech022,jpg,,lqs01_mech_poleey_field,jpg,
+/rename,lqs01_mech023,jpg,,lqs01_mech_polesy_field,jpg,
+/rename,lqs01_mech024,jpg,,lqs01_mech_yokes1_field,jpg,
+/rename,lqs01_mech025,jpg,,lqs01_mech_ymasters1_field,jpg,
+/rename,lqs01_mech026,jpg,,lqs01_mech_shellsy_field,jpg,
+/rename,lqs01_mech027,jpg,,lqs01_mech_shelley_field,jpg,
+/rename,lqs01_mech028,jpg,,lqs01_mech_coilx_field,jpg,
+/rename,lqs01_mech029,jpg,,lqs01_mech_coily_field,jpg,
+/rename,lqs01_mech030,jpg,,lqs01_mech_coileq_field,jpg,
+/rename,lqs01_mech031,jpg,,lqs01_mech_coilxy_field,jpg,
+/rename,lqs01_mech032,jpg,,lqs01_mech_cont_field,jpg,
+
+save
+
+alls
+
+/delete,,esav,
+/delete,,emat,
+/delete,,dbb,
+/delete,,full,
+/delete,,ldhi,
+/delete,,mntr,
+/delete,,osav,
+/delete,,PVTS,
+/delete,,r001,
+/delete,,rdb,
+/delete,,stat,
+/delete,,sda,
+/delete,,BCS,
+
+/RGB,INDEX, 0, 0, 0, 0  
+/RGB,INDEX, 60, 60, 60,13   
+/RGB,INDEX, 80, 80, 80,14   
+/RGB,INDEX,100,100,100,15
+   
+esel,s,type,,12,13,1
+nsle
+plnsol,cont,pres 
+
+alls
+cmsel,s,block1
+alls,below,area
+csys,1
+nsel,r,loc,x,r1
+nsel,r,loc,y,0
+*get,mninin,node,0,num,max
+
+alls
+cmsel,s,block1
+alls,below,area
+csys,1
+nsel,r,loc,x,(r1+r2)/2
+nsel,r,loc,y,0
+*get,mninmi,node,0,num,max
+
+alls
+cmsel,s,block1
+alls,below,area
+csys,1
+nsel,r,loc,x,r2
+nsel,r,loc,y,0
+*get,mninou,node,0,num,max
+
+alls
+cmsel,s,block3
+alls,below,area
+csys,1
+nsel,r,loc,x,r2
+nsel,r,loc,y,0
+*get,mnouin,node,0,num,max
+
+alls
+cmsel,s,block3
+alls,below,area
+csys,1
+nsel,r,loc,x,(r2+r3)/2
+nsel,r,loc,y,0
+*get,mnoumi,node,0,num,max
+
+alls
+cmsel,s,block3
+alls,below,area
+csys,1
+nsel,r,loc,x,r3
+nsel,r,loc,y,0
+*get,mnouou,node,0,num,max
+
+alls
+cmsel,s,block2
+alls,below,area
+csys,1
+nsel,r,loc,x,r1
+nsel,r,loc,y,block24
+*get,pninin,node,0,num,max
+
+alls
+cmsel,s,block2
+alls,below,area
+csys,1
+nsel,r,loc,x,(r1+r2)/2
+nsel,r,loc,y,(block24+block23)/2
+*get,pninmi,node,0,num,max
+
+alls
+cmsel,s,block2
+alls,below,area
+csys,1
+nsel,r,loc,x,r2
+nsel,r,loc,y,block23
+*get,pninou,node,0,num,max
+
+alls
+cmsel,s,block3
+alls,below,area
+csys,1
+nsel,r,loc,x,r2
+nsel,r,loc,y,block34
+*get,pnouin,node,0,num,max
+
+alls
+cmsel,s,block3
+alls,below,area
+csys,1
+nsel,r,loc,x,(r2+r3)/2
+nsel,r,loc,y,(block34+block33)/2
+*get,pnoumi,node,0,num,max
+
+alls
+cmsel,s,block3
+alls,below,area
+csys,1
+nsel,r,loc,x,r3
+nsel,r,loc,y,block33
+*get,pnouou,node,0,num,max
+
+alls
+cmsel,s,shell
+alls,below,area
+csys,1
+nsel,r,loc,x,shellout
+nsel,r,loc,y,0
+*get,ncyl,node,0,num,max
+
+alls
+cmsel,s,pole1
+alls,below,area
+csys,1
+nsel,r,loc,x,r1
+nsel,r,loc,y,45
+*get,npole1,node,0,num,max
+
+alls
+csys,1
+nsel,r,loc,x,r1
+nsel,r,loc,y,block24
+esel,s,type,,12
+esln,r,0
+*get,e1c1pi,elem,0,num,min
+alls
+
+alls
+csys,1
+nsel,r,loc,x,r2
+nsel,r,loc,y,block23
+esel,s,type,,12
+esln,r,0
+*get,e1c1po,elem,0,num,min
+alls
+
+alls
+csys,1
+nsel,r,loc,x,(r1+r2)/2
+nsel,r,loc,y,(block24+block23)/2
+esel,s,type,,12
+esln,r,0
+*get,e1c1pa,elem,0,num,min
+*get,e1c1pb,elem,0,num,max
+alls
+
+alls
+csys,1
+nsel,r,loc,x,r2
+nsel,r,loc,y,block34
+esel,s,type,,13
+esln,r,0
+*get,e2c1pi,elem,0,num,min
+alls
+
+alls
+csys,1
+nsel,r,loc,x,r3
+nsel,r,loc,y,block33
+esel,s,type,,13
+esln,r,0
+*get,e2c1po,elem,0,num,min
+alls
+
+alls
+csys,1
+nsel,r,loc,x,(r2+r3)/2
+nsel,r,loc,y,(block34+block33)/2
+esel,s,type,,13
+esln,r,0
+*get,e2c1pa,elem,0,num,min
+*get,e2c1pb,elem,0,num,max
+alls
+
+alls
+csys,0
+cmsel,s,key
+alls,below,area
+nsel,r,loc,x,padout-slot-1e-6,padout-slot+1e-6
+nsel,r,loc,y,keyy-1e-6,keyy+1e-6
+*get,shimka,node,0,num,min
+alls
+
+alls
+csys,0
+cmsel,s,key
+alls,below,area
+nsel,r,loc,x,padout-slot-1e-6,padout-slot+1e-6
+nsel,r,loc,y,keyy+keyh-1e-6,keyy+keyh+1e-6
+*get,shimkb,node,0,num,min
+alls
+
+alls
+csys,0
+cmsel,s,pmaster
+alls,below,area
+nsel,r,loc,x,padout-slot-1e-6,padout-slot+1e-6
+nsel,r,loc,y,keyy-1e-6,keyy+1e-6
+*get,shimpa,node,0,num,min
+alls
+
+alls
+csys,0
+cmsel,s,pmaster
+alls,below,area
+nsel,r,loc,x,padout-slot-1e-6,padout-slot+1e-6
+nsel,r,loc,y,keyy+keyh-1e-6,keyy+keyh+1e-6
+*get,shimpb,node,0,num,min
+alls
+
+nstep=3
+
+! Open the output files:
+/DELETE,lqs01_mech_results_output,txt
+*cfopen,lqs01_mech_results_output,txt,,append
+*vwrite,
+('Step','     pinin','     pinmi','     pinou','     pouin','     poumi','     pouou','    pole1i','    pole1m','    pole1o','    pole2i','    pole2m','    pole2o','      scyl','      ecyl','     spole','     epole' )
+*do,j,1,nstep
+	set,j
+	alls
+	rsys,1
+
+	*get,pinin,node,pninin,s,y
+	*set,pinin,pinin/(1000000)
+	*get,pinmi,node,pninmi,s,y
+	*set,pinmi,pinmi/(1000000)
+	*get,pinou,node,pninou,s,y
+	*set,pinou,pinou/(1000000)
+	*get,pouin,node,pnouin,s,y
+	*set,pouin,pouin/(1000000)
+	*get,poumi,node,pnoumi,s,y
+	*set,poumi,poumi/(1000000)
+	*get,pouou,node,pnouou,s,y
+	*set,pouou,pouou/(1000000)
+
+	*get,scyl,node,ncyl,s,y
+	*set,scyl,scyl/(1000000)
+	*get,ecyl,node,ncyl,epto,y
+	*set,ecyl,ecyl*(1000000)
+
+	*get,spole,node,npole1,s,y
+	*set,spole,spole/(1000000)
+	*get,epole,node,npole1,epto,y
+	*set,epole,epole*(1000000)
+
+
+	alls
+  	rsys,0
+	ETABLE,prest,CONT,PRES
+	PRETAB,PREST
+	*get,l1c1pi,etab,1,elem,e1c1pi
+	*get,l1c1po,etab,1,elem,e1c1po
+	*get,l2c1pi,etab,1,elem,e2c1pi
+	*get,l2c1po,etab,1,elem,e2c1po
+	*get,l1c1pa,etab,1,elem,e1c1pa
+	*get,l1c1pb,etab,1,elem,e1c1pb
+	*get,l2c1pa,etab,1,elem,e2c1pa
+	*get,l2c1pb,etab,1,elem,e2c1pb
+	*set,l1c1p,-(l1c1pa+l1c1pb)/2/(1000000)
+	*set,l2c1p,-(l2c1pa+l2c1pb)/2/(1000000)
+	*set,l1c1pi,-(l1c1pi)/(1000000)
+	*set,l1c1po,-(l1c1po)/(1000000)
+	*set,l2c1pi,-(l2c1pi)/(1000000)
+	*set,l2c1po,-(l2c1po)/(1000000)
+	ETABLE,,ERASE,1
+	*vwrite,j,pinin,pinmi,pinou,pouin,poumi,pouou,l1c1pi,l1c1p,l1c1po,l2c1pi,l2c1p,l2c1po,scyl,ecyl,spole,epole
+(1F4.0,16F10.1)
+*enddo
+*vwrite,
+('Step','     minin','     minmi','     minou','     mouin','     moumi','     mouou','    shim_d','    shim_u')
+*do,j,1,nstep
+	set,j
+	alls
+	rsys,1
+	*get,minin,node,mninin,s,y
+	*set,minin,minin/(1000000)
+	*get,minmi,node,mninmi,s,y
+	*set,minmi,minmi/(1000000)
+	*get,minou,node,mninou,s,y
+	*set,minou,minou/(1000000)
+	*get,mouin,node,mnouin,s,y
+	*set,mouin,mouin/(1000000)
+	*get,moumi,node,mnoumi,s,y
+	*set,moumi,moumi/(1000000)
+	*get,mouou,node,mnouou,s,y
+	*set,mouou,mouou/(1000000)
+	rsys,0
+	*get,dshimka,node,shimka,u,x
+	*get,dshimkb,node,shimkb,u,x
+	*get,dshimpa,node,shimpa,u,x
+	*get,dshimpb,node,shimpb,u,x
+
+	*set,dshima,(dshimka-dshimpa)*1000000
+	*set,dshimb,(dshimkb-dshimpb)*1000000
+
+	*vwrite,j,minin,minmi,minou,mouin,moumi,mouou,dshima,dshimb
+(1F4.0,8F10.1)
+*enddo
+*cfclos
